@@ -1,60 +1,45 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 const Home = ()=>{
+    const [data, setData] = useState([]);
+    useEffect(()=>{
+        fetch('/allposts', {
+            headers:{
+                "Authorization" : "Bearer "+localStorage.getItem("jwt")
+            }
+        })
+        .then(res=>res.json())
+        .then(result=>{
+            setData(result.posts);
+        })
+
+    }, [])
     return(
         <div className="home-page">
-            <div className="card home-card">
-                <h5>Anshuman Jain</h5>
-                <div className="card-image">
-                    <img alt="pic" src="https://images.unsplash.com/photo-1617719747363-80f32ac2b02b?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDV8YWV1NnJMLWo2ZXd8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"/>
+            {
+                data.map(item=>{
+                    return(
+                        <div className="card home-card" key={item._id}>
+                        <h5>{item.postedBy.name}</h5>
+                        <div className="card-image">
+                            <img alt="pic" src={item.photo}/>
+        
+                        </div>
+                        <div className="card-content">
+                        <i className="material-icons likebt">favorite</i>
+                            <h6>{item.title}</h6>
+                            <p>
+                                {item.body}
+                            </p>
+                            <input type="text" placeholder="have any thoughts!" />
+        
+                        </div>               
+                    </div>
 
-                </div>
-                <div className="card-content">
-                <i className="material-icons likebt">favorite</i>
-                    <h6>title</h6>
-                    <p>
-                        this is an amazing post
-                    </p>
-                    <input type="text" placeholder="have any thoughts!" />
-
-                </div>               
-            </div>
-
-            <div className="card home-card">
-                <h5>Anshuman Jain</h5>
-                <div className="card-image">
-                    <img alt="pic" src="https://images.unsplash.com/photo-1617719747363-80f32ac2b02b?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDV8YWV1NnJMLWo2ZXd8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"/>
-
-                </div>
-                <div className="card-content">
-                <i className="material-icons likebt">favorite</i>
-                    <h6>title</h6>
-                    <p>
-                        this is an amazing post
-                    </p>
-                    <input type="text" placeholder="have any thoughts!" />
-
-                </div>               
-            </div>
-
-            <div className="card home-card">
-                <h5>Anshuman Jain</h5>
-                <div className="card-image">
-                    <img alt="pic" src="https://images.unsplash.com/photo-1617719747363-80f32ac2b02b?ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDV8YWV1NnJMLWo2ZXd8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"/>
-
-                </div>
-                <div className="card-content">
-                <i className="material-icons likebt">favorite</i>
-                    <h6>title</h6>
-                    <p>
-                        this is an amazing post
-                    </p>
-                    <input type="text" placeholder="have any thoughts!" />
-
-                </div>               
-            </div>
-
-
+                    )
+                })
+            }
+           
         </div>
 
     );

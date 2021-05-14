@@ -1,10 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const requirelogin = require("../middlewares/requirelogin");
 const router = express.Router();
 const requireLogin = require('../middlewares/requirelogin');
 const Post = mongoose.model("Post");
 
-router.get('/allposts', (req ,res)=>{
+router.get('/allposts',requireLogin, (req ,res)=>{
     Post.find()
     .populate("postedBy", "_id name email")
     .then(posts=>{
